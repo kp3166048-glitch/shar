@@ -1,368 +1,581 @@
-1b)
-from scapy.all import * 
-packet=IP()/TCP() 
-e_pack=Ether()/packet 
-e_pack.show()
+1)
+STEP 1: Go to Desktop (so folder is easy to find)
+cd Desktop
 
-2b)
-from scapy.all import * 
-packets=sniff(count=10) 
-packets.summary()
- print(packets[0].show()) 
-print(packets[1].show())
+STEP 2: Create a new folder
+mkdir Git_Lab_Experiment1
 
-3a)
-from scapy.all import * 
+STEP 3: Go inside that folder
+cd Git_Lab_Experiment1
 
-result,unanswered=traceroute(["www.example.com","www.google.com"],maxttl=20) 
+STEP 4: Start Git in this folder
+git init
+’ now this folder becomes a git repository
 
-result.show()
+STEP 5: Check files
+ls
+ls -a   (shows hidden .git folder)
 
+STEP 6: Set your name and email (only first time)
+git config --global user.name "Meghana"
+git config --global user.email meghana@gmail.com
 
-4a)
+STEP 7: Create a file
+echo "This is my first Git experiment" > README.txt
 
-import scapy.all as scapy
-request = scapy.ARP()
-request.pdst = "172.29.240.1/28"
+STEP 8: Check status
+git status
+’ shows README.txt as untracked
 
-broadcast = scapy.Ether()
-broadcast.dst = "ff:ff:ff:ff:ff:ff"
+STEP 9: Add file to staging
+git add README.txt
+(or git add .)
 
-request_broadcast = broadcast / request
+STEP 10: Check status again
+git status
+’ shows file ready to commit
 
-clients = scapy.srp(request_broadcast, timeout=2)[0]
-for element in clients:
-    print(element[1].psrc + " - " + element[1].hwsrc)
+STEP 11: Save permanently (commit)
+git commit -m "Initial commit"
 
+STEP 12: Change the file
+echo "Git tracks file changes" >> README.txt
 
+STEP 13: Check status
+git status
+’ shows file modified
 
-7a)
-from scapy.all import * 
-packet=IP(dst="172.29.240.1")/ICMP() 
-send(packet)
+STEP 14: Add and commit again
+git add README.txt
+git commit -m "Updated README file"
 
+STEP 15: See all saved versions
+git log
 
-8a) 
-from scapy.all import *
-target = "www.google.com"
-for port in range(70, 85):
-    packet = IP(dst=target) / TCP(dport=port, flags="S")
-    response = sr1(packet, timeout=1, verbose=0)
-    if response:
-        print("Port", port, "is open")
+history -a
 
+2)
+Exp 2: Working with Git Branches
 
-10a)
-from scapy.all import *
-def callback(packet):
-    if packet.haslayer(ICMP):
-        print("ICMP Packet Detected")
-        packet.show()
+1) Open a folder and create a new folder.
+2) Copy the path of the folder.
+3) Open Git Bash and paste the path using cd command.
+4) git init
+   -> To initialize Git in repository.
 
-sniff(filter="icmp", prn=callback, count=10)
+5) Create a file using command:
+   notepad file1.txt
 
+6) Notepad opens, type:
+   this is initial content
 
+7) Save and close the notepad.
 
+8) Go to Git Bash and type:
+   git add file1.txt
 
-11a)
-import scapy.all as scapy
-request = scapy.ARP()
-request.pdst = "192.168.5.0/24"
-broadcast = scapy.Ether()
-broadcast.dst = "ff:ff:ff:ff:ff:ff"
-request_broadcast = broadcast / request
-clients = scapy.srp(request_broadcast, timeout=1)[0]
-for element in clients:
-    print(element[1].psrc + " - " + element[1].hwsrc)
+9) git commit -m "Initial commit"
 
+10) Check current branch:
+    git branch
+    -> Git shows main or master.
 
-12- a)
-from scapy.all import * result,unanswered=traceroute(["www.example.com","www.google.com"],maxttl=20) 
-result.show()
+11) Create feature branch:
+    git branch feature-branch
 
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-1c)
-#!/bin/bash
-read -p "Enter the starting port number: " start_portr
-read -p "Enter the ending port number: " end_port
-for (( port=start_port; port<=end_port; port++ ))
-do
-        nc -zv localhost $port
-done
+12) Switch to feature branch:
+    git checkout feature-branch
 
+13) Modify file in feature branch:
+    notepad file1.txt
 
-save it as port_scan.sh
-chmod +x port_scan.sh //changing permission
-./port_scan.sh
-""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-6C)
-xx' IN(itemnum,sdesc,ldesc) UNION SELECT email,passwd,123,123 FROM userdb LIMIT 2 --
+14) Type:
+    this is feature branch modification
 
-''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''''
-7c)
-x' union select count(itemnum),count(itemnum),count(itemnum),count(itemnum) from itemdb -- 
-
-3) LSB image stegnography
-import numpy as np
-from PIL import Image
-
-def Encode(src, message, dest):
-    img = Image.open(src, 'r')
-    width, height = img.size
-    array = np.array(list(img.getdata()))
-
-    if img.mode == 'RGB':
-        n = 3
-    elif img.mode == 'RGBA':
-        n = 4
-
-    total_pixels = array.size // n
-
-    message += "$t3g0"
-    b_message = ''.join([format(ord(i), "08b") for i in message])
-
-    req_pixels = len(b_message)
-
-    if req_pixels > total_pixels:
-        print("ERROR: Need larger file size")
-    else:
-        index = 0
-        for p in range(total_pixels):
-            for q in range(0, 3):
-                if index < req_pixels:
-                    array[p][q] = int(
-                        bin(array[p][q])[2:9] + b_message[index], 2
-                    )
-                    index += 1
+15) Save and close the file.
 
-    array = array.reshape(height, width, n)
-    enc_img = Image.fromarray(array.astype('uint8'), img.mode)
-    enc_img.save(dest)
-    print("Image Encoded Successfully")
+16) git add file1.txt
 
+17) git commit -m "Added new feature in feature branch"
 
-def Decode(src):
-    img = Image.open(src, 'r')
-    array = np.array(list(img.getdata()))
+18) Switch back to master/main branch:
+    git checkout master
 
-    if img.mode == 'RGB':
-        n = 3
-    elif img.mode == 'RGBA':
-        n = 4
+19) Modify file in master branch:
+    notepad file1.txt
 
-    total_pixels = array.size // n
-    hidden_bits = ""
+20) Type:
+    this is main branch modification
 
-    for p in range(total_pixels):
-        for q in range(0, 3):
-            hidden_bits += (bin(array[p][q])[2:][-1])
-
-    hidden_bits = [hidden_bits[i:i+8] for i in range(0, len(hidden_bits), 8)]
+21) git add file1.txt
 
-    message = ""
-    for i in range(len(hidden_bits)):
-        if message[-5:] == "$t3g0":
-            break
-        else:
-            message += chr(int(hidden_bits[i], 2))
+22) git commit -m "Updated file in master branch"
 
-    if "$t3g0" in message:
-        print("Hidden Message:", message[:-5])
-    else:
-        print("No Hidden Message Found")
+23) Merge feature branch:
+    git merge feature-branch
+    -> Conflict occurs
 
+24) Right click inside project folder
+    -> Show more options
+    -> Select TortoiseGit
+    -> Resolve
 
-def Stego():
-    print("-- Welcome to $t3g0 --")
-    print("1: Encode")
-    print("2: Decode")
+25) Select file1.txt
+    -> Edit conflicts
 
-    func = input()
+26) In TortoiseMerge:
+    -> Right click on "mine" (file1-local)
+    -> Select 3rd option (use block from right before left)
+    -> Click Save
 
-    if func == '1':
-        print("Enter Source Image Path")
-        src = input()
-        print("Enter Message to Hide")
-        message = input()
-        print("Enter Destination Image Path")
-        dest = input()
-        print("Encoding...")
-        Encode(src, message, dest)
+27) Close TortoiseMerge.
 
-    elif func == '2':
-        print("Enter Source Image Path")
-        src = input()
-        print("Decoding...")
-        Decode(src)
+28) git add file1.txt
+    -> Now conflict will not occur.
 
-    else:
-        print("ERROR: Invalid option chosen")
+29) git status
 
+30) git log
 
-Stego()
+31) Delete feature branch (optional):
+    git branch -d feature-branch
 
-4)ESB and CBC 
-touch plain.txt
-gedit plain.txt
-cat plain.txt
 
-openssl enc -aes-128-cbc -e -in plain.txt -out cipher1.bin -K 0123456789abcdeffedcba9876543210 -iv 00112233445566778899aabbccddeeff
-openssl enc -aes-128-cbc -d -in cipher1.bin -out output1.txt -K 0123456789abcdeffedcba9876543210 -iv 00112233445566778899aabbccddeeff
-xxd cipher1.bin
-cat output1.txt
+3)
+Experiment 3: GitHub Repository Creation and Push
 
-openssl enc -aes-128-ecb -e -in plain.txt -out cipher2.bin -K 0123456789abcdeffedcba9876543210
-openssl enc -aes-128-ecb -d -in cipher2.bin -out output2.txt -K 0123456789abcdeffedcba9876543210
-xxd cipher2.bin
-cat output2.txt
+Step 1: Configure Git (one time)
+git config --global user.name "Your Name"
+git config --global user.email "your_email@example.com"
 
-5)Bit map image
-openssl enc -aes-128-ecb -e -in pic_original.bmp -out pic_ecb.bmp -K 0123456789abcdeffedcba9876543210
+Step 2: Create repository on GitHub
+(Login to GitHub → New Repository → Name: git-lab-demo → Public → Create)
 
-openssl enc -aes-128-cbc -e -in pic_original.bmp -out pic_cbc.bmp -K 0123456789abcdeffedcba9876543210 -iv 00112233445566778899aabbccddeeff
+Step 3: Clone the GitHub repository
+cd Desktop
+git clone https://github.com/YourUsername/git-lab-demo.git
+cd git-lab-demo
 
-head -c 54 pic_original.bmp > header
+Step 4: Create a local file
+notepad main.py
 
-tail -c +55 pic_ecb.bmp > body_ecb
-cat header body_ecb > new_ecb.bmp
+(Type the following content in main.py)
+print("This file is from local machine")
 
-tail -c +55 pic_cbc.bmp > body_cbc
-cat header body_cbc > new_cbc.bmp
+Save and close the file.
 
-eog new_ecb.bmp
-eog new_cbc.bmp
+Step 5: Add and commit the file
+git add main.py
+git commit -m "Add main.py file"
 
-6)padding
+Step 6: Push local code to GitHub
+git push -u origin main
 
-echo -n 12345 > f1.txt
-echo -n 1234567890 > f2.txt
-echo -n 1234567890abcdef > f3.txt
+Step 7: Modify file on GitHub (online)
+(Edit README.md and add: Updated via GitHub)
 
-ls -l f*.txt
+Step 8: Pull changes from GitHub
+git pull origin main
 
-openssl enc -aes-128-cbc -e -in f1.txt -out f1.bin -K 0123456789abcdeffedcba9876543210 -iv 00112233445566778899aabbccddeeff
-openssl enc -aes-128-cbc -d -in f1.bin -out f1_dec.txt -K 0123456789abcdeffedcba9876543210 -iv 00112233445566778899aabbccddeeff
-openssl enc -aes-128-cbc -d -in f1.bin -out f1_nopad.txt -nopad -K 0123456789abcdeffedcba9876543210 -iv 00112233445566778899aabbccddeeff
-xxd f1_dec.txt
-xxd f1_nopad.txt
+Step 9: Verify updates
+git status
+git log
 
-openssl enc -aes-128-cbc -e -in f2.txt -out f2.bin -K 0123456789abcdeffedcba9876543210 -iv 00112233445566778899aabbccddeeff
-openssl enc -aes-128-cbc -d -in f2.bin -out f2_dec.txt -K 0123456789abcdeffedcba9876543210 -iv 00112233445566778899aabbccddeeff
-openssl enc -aes-128-cbc -d -in f2.bin -out f2_nopad.txt -nopad -K 0123456789abcdeffedcba9876543210 -iv 00112233445566778899aabbccddeeff
-xxd f2_dec.txt
-xxd f2_nopad.txt
+4)
+Step 1: Fork the repository on GitHub
+(Login to GitHub → Open git-lab-demo → Click Fork)
 
-openssl enc -aes-128-cbc -e -in f3.txt -out f3.bin -K 0123456789abcdeffedcba9876543210 -iv 00112233445566778899aabbccddeeff
-openssl enc -aes-128-cbc -d -in f3.bin -out f3_dec.txt -K 0123456789abcdeffedcba9876543210 -iv 00112233445566778899aabbccddeeff
-openssl enc -aes-128-cbc -d -in f3.bin -out f3_nopad.txt -nopad -K 0123456789abcdeffedcba9876543210 -iv 00112233445566778899aabbccddeeff
-xxd f3_dec.txt
-xxd f3_nopad.txt
+Step 2: Clone the forked repository
+cd Desktop
+git clone https://github.com/YourUsername/git-lab-demo.git
+cd git-lab-demo
 
-7)Error propagation
+Step 3: Create a new branch
+git branch feature-update
+git checkout feature-update
 
-part a:error propagation
-                                                                                                                                                                                                                   touch plain.txt
-gedit plain.txt
+Step 4: Modify a file
+notepad main.py
 
-openssl enc -aes-128-ecb -e -in plain.txt -out cipher_ecb.bin -K 0123456789abcdeffedcba9876543210
+(Add the following line)
+print("Change made in feature branch")
 
-ghex cipher_ecb.bin
+Save and close the file.
 
-openssl enc -aes-128-ecb -d -in cipher_ecb.bin -out op_ecb.txt -K 0123456789abcdeffedcba9876543210
+Step 5: Add and commit changes
+git add main.py
+git commit -m "Updated file in feature branch"
 
-openssl enc -aes-128-cbc -e -in plain.txt -out cipher_cbc.bin -K 0123456789abcdeffedcba9876543210 -iv 00112233445566778899aabbccddeeff
+Step 6: Push feature branch to forked repository
+git push origin feature-update
 
-ghex cipher_cbc.bin
+Step 7: Create Pull Request on GitHub
+(Open GitHub → Pull Requests → New Pull Request → Create Pull Request)
 
-openssl enc -aes-128-cbc -d -in cipher_cbc.bin -out op_cbc.txt -K 0123456789abcdeffedcba9876543210 -iv 00112233445566778899aabbccddeeff
+Step 8: Merge Pull Request
+(Click Merge Pull Request → Confirm merge)
 
-cat op_ecb.txt
-cat op_cbc.txt
+Step 9: Update local repository after merge
+git checkout main
+git pull origin main
 
-part b : initialisation vector 
+Step 10: Verify merge
+git status
+git log
 
-echo "THIS IS SAMPLE DATA FOR AES IV TEST" > abc.txt
+5)
+# Step 0: Open Git Bash normally (not Git Bash Here)
 
-openssl enc -aes-128-cbc -e -in abc.txt -out cipher_iv1.bin -K 00112233445566778899AABBCCDDEEFF -iv 0102030405060708090A0B0C0D0E0F10
-xxd cipher_iv1.bin
+# Step 1: Go to user home directory
+cd ~
 
-openssl enc -aes-128-cbc -e -in abc.txt -out cipher_iv2.bin -K 00112233445566778899AABBCCDDEEFF -iv 1112131415161718191A1B1C1D1E1F20
-xxd cipher_iv2.bin[]=
+# Step 2: Create a fresh folder for Experiment 5
+mkdir DevOps_Exp5
+cd DevOps_Exp5
 
-openssl enc -aes-128-cbc -e -in abc.txt -out cipher_same1.bin -K 00112233445566778899AABBCCDDEEFF -iv 0102030405060708090A0B0C0D0E0F10
-xxd cipher_same1.bin
+# Step 3: Initialize a new Git repository
+git init
 
-openssl enc -aes-128-cbc -e -in abc.txt -out cipher_same2.bin -K 00112233445566778899AABBCCDDEEFF -iv 0102030405060708090A0B0C0D0E0F10
-xxd cipher_same2.bin
+# Step 4: Verify repository is clean
+git status
 
-openssl enc -aes-128-cbc -d -in cipher_iv1.bin -out dec_iv1.txt -K 00112233445566778899AABBCCDDEEFF -iv 0102030405060708090A0B0C0D0E0F10
-cat dec_iv1.txt
+# Step 5: Create a sample file for versioning
+echo "Git Tagging Experiment" > file1.txt
 
-openssl enc -aes-128-cbc -d -in cipher_iv2.bin -out dec_iv2.txt -K 00112233445566778899AABBCCDDEEFF -iv 1112131415161718191A1B1C1D1E1F20
-cat dec_iv2.txt
+# Step 6: Add file to staging area
+git add file1.txt
 
-8)Gen RSA
+# Step 7: Commit the file
+git commit -m "Initial commit for tagging experiment"
 
-openssl genrsa -out key.pri 2048
-openssl rsa -in key.pri -out key.pub -pubout
-openssl rsa -in key.pri -noout -text
-cat key.pub
+# Step 8: View commit history
+git log --oneline
 
-echo "HELLO" > msg.txt
-openssl rsautl -encrypt -inkey key.pub -pubin -in msg.txt -out msg.enc
-openssl rsautl -decrypt -inkey key.pri -in msg.enc -out msg.dec
-cat msg.dec
+# Step 9: Create an annotated tag
+git tag -a v1.0 -m "Version 1.0 release"
 
-openssl rand -hex 32 > secret.key
-openssl rsautl -encrypt -inkey key.pub -pubin -in secret.key -out secret.key.enc
-openssl rsautl -decrypt -inkey key.pri -in secret.key.enc -out secret.key.dec
-cat secret.key
-cat secret.key.dec
+# Step 10: List all tags
+git tag
 
-9)tcp dump
+# Step 11: View details of the tag
+git show v1.0
 
-tcpdump -D
+# Step 12: create repository and then Add GitHub remote repository
+git remote add origin https://github.com/USERNAME/DevOps_Exp5.git
 
-sudo tcpdump -i any
-Ctrl + C
+# Step 13: Push commits to GitHub
+git push origin master
 
-sudo tcpdump -i any -w capture.pcap
-Ctrl + C
+# Step 14: Push the tag to GitHub
+git push origin v1.0
 
-# open new terminal
-ping google.com
-Ctrl + C
+# Step 15: (Optional) Push all tags
+git push --tags
 
-# back to first terminal
-sudo tcpdump -i any tcp
-Ctrl + C
+# Step 16: Create GitHub Release using browser
+# Go to GitHub → Repository → Releases → Create new release
+# Select tag v1.0 → Add title & description → Publish release
 
-sudo tcpdump -i any icmp
-Ctrl + C
+6)
+# EXPERIMENT–6 : MAVEN
 
-sudo tcpdump -i any port 80
-Ctrl + C
+# Step 1: Open Command Prompt
+# Step 2: Check Java installation
+java --version
 
-sudo tcpdump -n -i any 'tcp[tcpflags] & tcp-syn != 0'
-Ctrl + C
+# Step 3: Check Maven installation
+mvn --version
 
-sudo tcpdump -n -i any 'tcp[tcpflags] & tcp-syn != 0' -w tcpsyn.pcap
-Ctrl + C
+# Step 4: Create a new folder in Desktop named project
+cd %USERPROFILE%\Desktop
+mkdir project
+cd project
 
-sudo tcpdump -n -i any 'tcp[tcpflags] & tcp-ack != 0'
-Ctrl + C
+# Step 5: Create a folder inside it named maven-project
+mkdir maven-project
+cd maven-project
 
-sudo tcpdump -n -i any 'tcp[tcpflags] & (tcp-syn|tcp-ack) != 0'
-Ctrl + C
+# Step 6: Generate Maven project
+mvn archetype:generate
 
+# Step 7: Choose a number you will get, type 2309
+# Step 8: Choose a number: 9 (choose latest version)
 
-sudo tcpdump -n -i any 'tcp[tcpflags] & tcp-fin != 0' -w tcpfin.pcap
-Ctrl + C
-sudo tcpdump -r capture.pcap
-sudo tcpdump -A -r capture.pcap
+# Step 9: Define value for property groupId
+org.bnm
+# or
+com.google
 
-sudo tcpdump -xx -r capture.pcap
+# Step 10: Define value for property artifactId
+maven-demo
 
-sudo tcpdump -xx -r tcpsyn.pcap
+# Step 11: Define value for property version
+1.0-SNAPSHOT
 
-sudo tcpdump -xx -r tcpfin.pcap
+# Step 12: Define value for property package
+org.bnm.demo
+
+# Step 13: Type Y and press Enter
+Y
+
+# Step 14: Go back to the folder you have created
+cd maven-demo
+
+# Step 15: Check project structure
+dir
+
+# Step 16: Open src/main/java/org/bnm/demo/App.java
+# Replace code with ANY ONE program below
+
+# ---------------- PROGRAM 1: HELLO WORLD ----------------
+package org.bnm.demo;
+
+public class App {
+    public static void main(String[] args) {
+        System.out.println("Hello World");
+    }
+}
+
+# ---------------- PROGRAM 2: LENGTH OF STRING ----------------
+package org.bnm.demo;
+
+public class App {
+    public static void main(String[] args) {
+        String s = "DevOps";
+        System.out.println("Length of string: " + s.length());
+    }
+}
+
+# ---------------- PROGRAM 3: AREA OF SQUARE ----------------
+package org.bnm.demo;
+
+public class App {
+    public static void main(String[] args) {
+        int side = 5;
+        int area = side * side;
+        System.out.println("Area of square: " + area);
+    }
+}
+
+# ---------------- PROGRAM 4: EVEN OR ODD ----------------
+package org.bnm.demo;
+
+public class App {
+    public static void main(String[] args) {
+        int n = 10;
+        if (n % 2 == 0)
+            System.out.println("Even number");
+        else
+            System.out.println("Odd number");
+    }
+}
+
+# ---------------- PROGRAM 5: SIMPLE INTEREST ----------------
+package org.bnm.demo;
+
+public class App {
+    public static void main(String[] args) {
+        int p = 1000, t = 2, r = 5;
+        int si = (p * t * r) / 100;
+        System.out.println("Simple Interest: " + si);
+    }
+}
+
+# Step 17: Go back to maven-demo folder
+cd maven-demo
+
+# Step 18: Build the project
+mvn clean package
+
+# Step 19: Go to target folder
+cd target
+
+# Step 20: Verify JAR file
+dir
+# Output: maven-demo-1.0-SNAPSHOT.jar
+
+
+9)
+DevOps Experiment - 09
+
+Steps:
+
+STEP 1: Open Jenkins dashboard
+Open browser and go to http://localhost:8080
+Login to Jenkins
+
+STEP 2: Create a new pipeline job
+Click New Item
+Enter job name: Exp9_Pipeline
+Select Pipeline
+Click OK
+
+STEP 3: Configure pipeline script
+Scroll to Pipeline section
+Select Definition → Pipeline script
+
+STEP 4: Enter Build and Test pipeline script
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Building the project'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Testing the project'
+            }
+        }
+    }
+}
+
+STEP 5: Save and execute pipeline
+Click Save
+Click Build Now
+
+STEP 6: Modify pipeline to Hello World
+Click Configure → Pipeline section
+pipeline {
+    agent any
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World from Jenkins Pipeline'
+            }
+        }
+    }
+}
+
+STEP 7: Save and execute Hello World pipeline
+Click Save
+Click Build Now
+Check Console Output for Hello World message
+
+STEP 8: Modify pipeline to add two numbers
+Click Configure → Pipeline section
+pipeline {
+    agent any
+    stages {
+        stage('Addition') {
+            steps {
+                script {
+                    int a = 10
+                    int b = 20
+                    int sum = a + b
+                    echo "Addition of ${a} and ${b} is ${sum}"
+                }
+            }
+        }
+    }
+}
+
+STEP 9: Save and execute addition pipeline
+Click Save
+Click Build Now
+Verify addition result in Console Output
+
+
+10)
+DevOps Experiment - 10
+
+Steps:
+
+STEP 1: Create a new pipeline job
+Open Jenkins dashboard
+Click New Item
+Enter job name: Exp10_Visualization
+Select Pipeline
+Click OK
+
+STEP 2: Configure pipeline script
+Scroll to Pipeline section
+Select Definition → Pipeline script
+
+STEP 3: Enter Build and Test pipeline script
+pipeline {
+    agent any
+    stages {
+        stage('Build') {
+            steps {
+                echo 'Build stage executing'
+            }
+        }
+        stage('Test') {
+            steps {
+                echo 'Test stage executing'
+            }
+        }
+    }
+}
+
+STEP 4: Save and run pipeline
+Click Save
+Click Build Now
+
+STEP 5: View pipeline execution graph
+Click job name
+Click Stage View
+Observe Build and Test stages shown in pipeline graph
+
+STEP 6: View console logs
+Click build number
+Click Console Output
+Analyze log messages of each stage
+
+STEP 7: Modify pipeline to Hello World
+Click Configure → Pipeline section
+pipeline {
+    agent any
+    stages {
+        stage('Hello') {
+            steps {
+                echo 'Hello World from Jenkins'
+            }
+        }
+    }
+}
+
+STEP 8: Save and run Hello World pipeline
+Click Save
+Click Build Now
+Check Console Output
+
+STEP 9: Modify pipeline to addition with failure
+Click Configure → Pipeline section
+pipeline {
+    agent any
+    stages {
+        stage('Addition') {
+            steps {
+                script {
+                    int x = 5
+                    int y = 7
+                    echo "Sum = ${x + y}"
+                }
+            }
+        }
+        stage('Test') {
+            steps {
+                error 'Addition test failed'
+            }
+        }
+    }
+}
+
+STEP 10: Save and run pipeline
+Click Save
+Click Build Now
+
+STEP 11: Analyze failure using graph and logs
+Open Stage View → observe failed stage in RED
+Open Console Output → identify error message
+
+STEP 12: Fix the error
+Remove error statement
+Save pipeline
+Build again successfully
+
+U shld redownload  pipeline view stage
+Even though it's 100 re download it u'll get
