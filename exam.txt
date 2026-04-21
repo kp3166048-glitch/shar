@@ -355,7 +355,14 @@ Ctrl + C
 sudo tcpdump -n -i any 'tcp[tcpflags] & (tcp-syn|tcp-ack) != 0'
 Ctrl + C
 
+
 sudo tcpdump -n -i any 'tcp[tcpflags] & tcp-fin != 0' -w tcpfin.pcap
 Ctrl + C
-
 sudo tcpdump -r capture.pcap
+sudo tcpdump -A -r capture.pcap
+
+sudo tcpdump -xx -r capture.pcap
+
+sudo tcpdump -xx -r tcpsyn.pcap
+
+sudo tcpdump -xx -r tcpfin.pcap
